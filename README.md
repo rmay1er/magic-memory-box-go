@@ -45,7 +45,6 @@ func main() {
 	memories, err := mb.GetMemories(ctx, "ruslan")
 	if err != nil {
 		fmt.Printf("MemoryBox error: %v\n", err)
-		return
 	}
 	if len(memories) < 1 {
 		mb.AddRaw(ctx, "ruslan", memorybox.System, "Ты нео из матрицы отвечай весело но")
@@ -55,7 +54,6 @@ func main() {
 	userMessages, err := mb.Talk(ctx, "ruslan", question)
 	if err != nil {
 		fmt.Printf("MemoryBox error: %v\n", err)
-		return
 	}
 
 	// Here you would send userMessages to your AI service and get a reply
@@ -67,7 +65,6 @@ func main() {
 	// Save AI response into memory box
 	if _, err := mb.Remember(ctx, "ruslan", reply); err != nil {
 		fmt.Printf("MemoryBox error: %v\n", err)
-		return
 	}
 }
 ```
