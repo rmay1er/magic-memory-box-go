@@ -35,8 +35,8 @@ func CacheExample() {
 	// ContextLenSize defines how many recent messages to keep.
 	// ExpireTime sets how long memories are kept before they are dropped.
 	box := memorybox.NewMemoryBox(cache, memorybox.MemoryBoxConfig{
-		ContextLenSize: 10,
-		ExpireTime:     2 * time.Hour,
+		ContextLenSize: 5,
+		ExpireTime:     time.Hour,
 	})
 
 	// Create an AI client instance using the GPT-4 1.1 mini model and the API token from environment variables.
@@ -71,7 +71,6 @@ func CacheExample() {
 		if err != nil {
 			// On error fetching memories, print it and exit the loop.
 			fmt.Printf("MemoryBox error: %v\n", err)
-			break
 		}
 
 		// If no memories exist yet, add a system message to guide the conversation style.
@@ -86,7 +85,7 @@ func CacheExample() {
 		if err != nil {
 			// If something goes wrong, print the error and exit the loop.
 			fmt.Printf("MemoryBox error: %v\n", err)
-			break
+
 		}
 
 		// Call the AI client to generate a response using the conversation messages.
@@ -104,14 +103,17 @@ func CacheExample() {
 		reply := strings.TrimSpace(strings.Join(resp.Output, ""))
 
 		// Print the AI's response labeled as "Нео:" (Neo).
-		fmt.Printf("Нео: %s\n", reply)
+		fmt.Printf("Нео: %#v\n", resp.Output)
 
 		// Remember the AI's reply to append to the conversation history.
 		_, err = box.Remember(ctx, "ruslan", reply)
 		if err != nil {
 			// Handle errors while saving memory.
 			fmt.Printf("MemoryBox error: %v\n", err)
-			break
 		}
 	}
+}
+
+func main () {
+  CacheExample()
 }

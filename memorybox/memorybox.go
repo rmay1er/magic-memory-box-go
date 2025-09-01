@@ -3,7 +3,6 @@ package memorybox
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 )
 
 // NewMemoryBox creates a new MemoryBox instance with the given IMemorizer and configuration.
@@ -17,11 +16,9 @@ func NewMemoryBox(m IMemorizer, cfg MemoryBoxConfig) IMemoryBox {
 // AddRaw retrieves the existing messages for a user, appends a new message with the specified role and content,
 // and saves the updated list back to the memory store.
 func (b *MemoryBox) AddRaw(ctx context.Context, userid string, role Role, value string) ([]Message, error) {
-	lastMessages, err := b.Get(ctx, userid)
-	if err != nil {
-		fmt.Println(err)
-	}
-	// Initialize the array
+ 	// Initialize the array
+	lastMessages, _ := b.Get(ctx, userid)
+
 	data := []Message{}
 
 	// Parse existing messages if any
@@ -30,6 +27,17 @@ func (b *MemoryBox) AddRaw(ctx context.Context, userid string, role Role, value 
 			return data, err
 		}
 	}
+
+	if len(data) > b.ContextLenSize {
+		if data[0].Role == "system" {
+			// Удаляем второй элемент, сдвигая срез так, чтобы исключить data[1]
+			data = append(data[:1], data[2:]...)
+		} else {
+			// Если первый элемент не system, просто удаляем первый
+			data = data[1:]
+		}
+}
+
 
 	// Add the new message
 	data = append(data, Message{
@@ -71,7 +79,7 @@ func (b *MemoryBox) Remember(ctx context.Context, userid string, value string) (
 func (b *MemoryBox) GetMemories(ctx context.Context, userid string) ([]Message, error) {
 	lastMessages, err := b.Get(ctx, userid)
 	if err != nil {
-		fmt.Println(err)
+  return []Message{}, err
 	}
 	// Initialize the array
 	data := []Message{}
