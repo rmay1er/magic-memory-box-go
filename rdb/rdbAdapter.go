@@ -11,8 +11,6 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
-
-
 func NewRedisAdapter(client *redis.Client, prefix string, flushSessionOnSIGINT ...bool) *RedisAdapter {
 	adapter := &RedisAdapter{client: client, prefix: prefix}
 

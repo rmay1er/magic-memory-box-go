@@ -6,8 +6,11 @@ import (
 )
 
 type MemoryBoxConfig struct {
+	// ContextLenSize defines the size of the context length.
 	ContextLenSize int
-	ExpireTime     time.Duration
+
+	// ExpireTime defines the expiration duration for stored memories.
+	ExpireTime time.Duration
 }
 
 type MemoryBox struct {
@@ -15,29 +18,14 @@ type MemoryBox struct {
 	MemoryBoxConfig
 }
 
-// Redis — базовый интерфейс для работы с Redis.
+// IMemorizer is the base interface for working with Redis.
 type IMemorizer interface {
-	// Set устанавливает значение с возможным временем жизни (TTL).
+	// Set sets a value with an optional expiration time (TTL).
 	Set(ctx context.Context, key string, value any, expiration ...time.Duration) error
 
-	// Get возвращает значение по ключу.
-	// Если ключа нет, возвращается redis.Nil.
+	// Get returns the value of the given key.
+	// If the key does not exist, redis.Nil is returned.
 	Get(ctx context.Context, key string) (string, error)
-
-	// Del удаляет один или несколько ключей.
-	// Del(ctx context.Context, keys ...string) (int64, error)
-
-	// Exists проверяет существование ключей.
-	// Exists(ctx context.Context, keys ...string) (int64, error)
-
-	// Expire устанавливает TTL для ключа.
-	// Expire(ctx context.Context, key string, expiration time.Duration) (bool, error)
-
-	// TTL возвращает оставшееся время жизни ключа.
-	// TTL(ctx context.Context, key string) (time.Duration, error)
-
-	// Keys возвращает список ключей по шаблону (например, "session:*").
-	// Keys(ctx context.Context, pattern string) ([]string, error)
 }
 
 type Role string
@@ -49,9 +37,10 @@ const (
 	Assistant Role = "assistant"
 )
 
+// Message represents a chat message with a role and content.
 type Message struct {
-	Role    Role
-	Content string
+	Role    Role   // Role of the message sender
+	Content string // Content of the message
 }
 
 type IMemoryBox interface {
