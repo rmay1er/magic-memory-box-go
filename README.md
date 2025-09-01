@@ -39,31 +39,31 @@ func main() {
 		ExpireTime:     2 * time.Hour,
 	})
 
-	question := "Привет, как дела?"
+	question := "You are Neo from Matrix"
 
 	// Ensure system prompt is present
-	memories, err := mb.GetMemories(ctx, "ruslan")
+	memories, err := mb.GetMemories(ctx, "user123")
 	if err != nil {
 		fmt.Printf("MemoryBox error: %v\n", err)
 	}
 	if len(memories) < 1 {
-		mb.AddRaw(ctx, "ruslan", memorybox.System, "Ты нео из матрицы отвечай весело но")
+		mb.AddRaw(ctx, "user123", memorybox.System, "You are Neo from Matrix")
 	}
 
 	// Add user input to conversation context
-	userMessages, err := mb.Talk(ctx, "ruslan", question)
+	userMessages, err := mb.Talk(ctx, "user123", question)
 	if err != nil {
 		fmt.Printf("MemoryBox error: %v\n", err)
 	}
 
 	// Here you would send userMessages to your AI service and get a reply
 	// For demonstration, we simply echo the last user message
-	reply := "Привет! У меня всё отлично."
+	reply := "Hello, i'm okay"
 
-	fmt.Printf("Нео: %s\n", reply)
+	fmt.Printf("Neo: %s\n", reply)
 
 	// Save AI response into memory box
-	if _, err := mb.Remember(ctx, "ruslan", reply); err != nil {
+	if _, err := mb.Remember(ctx, "user123", reply); err != nil {
 		fmt.Printf("MemoryBox error: %v\n", err)
 	}
 }
