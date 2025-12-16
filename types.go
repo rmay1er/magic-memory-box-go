@@ -5,24 +5,16 @@ import (
 	"time"
 )
 
-// mapFields holds a cached value along with its expiration time.
+// MapFields holds a cached value along with its expiration time.
 type MapFields struct {
 	Value      any       // The stored value in the cache.
 	ExpireTime time.Time // The time when the value expires.
 }
 
-// inCache represents an in-memory cache using a map.
+// InCache represents an in-memory cache using a map.
 type MemoryCache struct {
 	memory map[string]MapFields // The cache storage mapping keys to cached values.
 	mu     sync.RWMutex         // Mutex to protect concurrent access to memory.
-}
-
-type MemoryBoxConfig struct {
-	// ContextLenSize defines the size of the context length.
-	ContextLenSize int
-
-	// ExpireTime defines the expiration duration for stored memories.
-	ExpireTime time.Duration
 }
 
 type Role string

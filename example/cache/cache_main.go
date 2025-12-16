@@ -9,6 +9,8 @@ import (
 	"time"
 
 	"github.com/joho/godotenv"
+
+	"github.com/rmay1er/magic-memory-box-go/convert"
 	"github.com/rmay1er/magic-memory-box-go/incache"
 	"github.com/rmay1er/magic-memory-box-go/memorybox"
 	"github.com/rmay1er/reptiloid-go/reptiloid"
@@ -18,6 +20,7 @@ import (
 // CacheExample demonstrates usage of the memory box and AI client for a simple interactive conversation.
 // It includes detailed comments to help even beginners understand each step.
 func CacheExample() {
+
 	// Load environment variables from a .env file. This is where secrets like API tokens are stored.
 	err := godotenv.Load()
 	if err != nil {
@@ -91,7 +94,7 @@ func CacheExample() {
 		// Call the AI client to generate a response using the conversation messages.
 		// Convert memorybox messages into the format expected by the AI client.
 		resp, err := client.Generate(&text.GPT4SeriesInput{
-			Messages: memorybox.ConvertMessagesForReplicate(userMsgs),
+			Messages: convert.ConvertMessagesForReplicate(userMsgs),
 		})
 		if err != nil {
 			// Print AI generation errors and stop.
