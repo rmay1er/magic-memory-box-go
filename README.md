@@ -1,4 +1,3 @@
-magic-memory-box-go/README.md
 # Magic Memory Box Go
 
 **Universal Memory for AI Models** — A conversation context management library for AI assistants and chatbots.
