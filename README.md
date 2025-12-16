@@ -1,3 +1,4 @@
+magic-memory-box-go/README.md
 # Magic Memory Box Go
 
 **Universal Memory for AI Models** — A conversation context management library for AI assistants and chatbots.
@@ -49,14 +50,14 @@ import (
     "context"
     "time"
     
-    "github.com/rmay1er/magic-memory-box-go/"
+    "github.com/rmay1er/magic-memory-box-go/memorybox"
 )
 
 func main() {
     ctx := context.Background()
     
     // Create in-memory storage
-    cache := incache.NewCache()
+    cache := memorybox.NewCache()
     
     // Configure the memory box
     mb := memorybox.NewMemoryBox(cache, memorybox.MemoryBoxConfig{
@@ -65,7 +66,7 @@ func main() {
     })
     
     // Add system message (assistant personality)
-    mb.AddRaw(ctx, "user123", memorybox.System, "You are a helpful assistant")
+    mb.AddRaw(ctx, "user123", memorybox.SystemRole, "You are a helpful assistant")
     
     // User says something
     mb.Talk(ctx, "user123", "Hello! How are you?")
@@ -87,9 +88,9 @@ func main() {
 
 ### 1. Built-in Memory (for development and testing)
 ```go
-import "github.com/rmay1er/magic-memory-box-go/incache"
+import "github.com/rmay1er/magic-memory-box-go/memorybox"
 
-cache := incache.NewCache()
+cache := memorybox.NewCache()
 // Fast, simple, no external dependencies
 ```
 
@@ -97,6 +98,7 @@ cache := incache.NewCache()
 ```go
 import (
     "github.com/go-redis/redis/v8"
+    "github.com/rmay1er/magic-memory-box-go/memorybox"
     "github.com/rmay1er/magic-memory-box-go/rdb"
 )
 
@@ -114,11 +116,13 @@ redisAdapter := rdb.NewRedisAdapter(client, "chat:", true)
 
 ### With Replicate (via Reptiloid)
 ```go
+import "github.com/rmay1er/magic-memory-box-go/convert"
+
 // Get conversation history
 messages, _ := mb.GetMemories(ctx, "user123")
 
 // Convert to Replicate format
-replicateMessages := memorybox.ConvertMessagesForReplicate(messages)
+replicateMessages := convert.ToReplicate(messages)
 
 // Send to AI model...
 ```
