@@ -68,7 +68,7 @@ func main() {
     mb.AddRaw(ctx, "user123", memorybox.SystemRole, "You are a helpful assistant")
     
     // User says something
-    mb.Talk(ctx, "user123", "Hello! How are you?")
+    mb.Tell(ctx, "user123", "Hello! How are you?")
     
     // Get full history to send to AI model
     messages, _ := mb.GetMemories(ctx, "user123")
