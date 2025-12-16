@@ -3,6 +3,7 @@ package memorybox
 import (
 	"context"
 	"encoding/json"
+	"time"
 )
 
 // NewMemoryBox creates a new MemoryBox instance with the given IMemorizer and configuration.
@@ -13,10 +14,22 @@ func NewMemoryBox(m IMemorizer, cfg MemoryBoxConfig) IMemoryBox {
 	}
 }
 
+// WithDefault creates a new MemoryBox instance with default.
+func NewMemoryBoxDefault() IMemoryBox {
+	cache := NewCache()
+	return &MemoryBox{
+		IMemorizer: cache,
+		MemoryBoxConfig: MemoryBoxConfig{
+			ContextLenSize: 20,
+			ExpireTime:     1 * time.Hour,
+		},
+	}
+}
+
 // AddRaw retrieves the existing messages for a user, appends a new message with the specified role and content,
 // and saves the updated list back to the memory store.
 func (b *MemoryBox) AddRaw(ctx context.Context, userid string, role Role, value string) ([]Message, error) {
- 	// Initialize the array
+	// Initialize the array
 	lastMessages, _ := b.Get(ctx, userid)
 
 	data := []Message{}
@@ -36,8 +49,7 @@ func (b *MemoryBox) AddRaw(ctx context.Context, userid string, role Role, value 
 			// Если первый элемент не system, просто удаляем первый
 			data = data[1:]
 		}
-}
-
+	}
 
 	// Add the new message
 	data = append(data, Message{
@@ -79,7 +91,7 @@ func (b *MemoryBox) Remember(ctx context.Context, userid string, value string) (
 func (b *MemoryBox) GetMemories(ctx context.Context, userid string) ([]Message, error) {
 	lastMessages, err := b.Get(ctx, userid)
 	if err != nil {
-  return []Message{}, err
+		return []Message{}, err
 	}
 	// Initialize the array
 	data := []Message{}

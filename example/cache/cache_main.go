@@ -40,7 +40,7 @@ func CacheExample() {
 	})
 
 	// Create an AI client instance using the GPT-4 1.1 mini model and the API token from environment variables.
-	client := reptiloid.NewClient(text.GPT41mini, os.Getenv("REPLICATE_API_TOKEN"))
+	client := reptiloid.NewClient(&text.GPT41mini, os.Getenv("REPLICATE_API_TOKEN"))
 
 	// Set up a reader to read user input from the standard input (keyboard).
 	reader := bufio.NewReader(os.Stdin)
@@ -90,7 +90,7 @@ func CacheExample() {
 
 		// Call the AI client to generate a response using the conversation messages.
 		// Convert memorybox messages into the format expected by the AI client.
-		resp, err := client.Generate(text.GPT4SeriesInput{
+		resp, err := client.Generate(&text.GPT4SeriesInput{
 			Messages: memorybox.ConvertMessagesForReplicate(userMsgs),
 		})
 		if err != nil {
@@ -114,6 +114,6 @@ func CacheExample() {
 	}
 }
 
-func main () {
-  CacheExample()
+func main() {
+	CacheExample()
 }

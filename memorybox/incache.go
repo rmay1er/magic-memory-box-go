@@ -1,4 +1,4 @@
-package incache
+package memorybox
 
 import (
 	"context"
@@ -25,10 +25,12 @@ func (c *inCache) Set(ctx context.Context, key string, value any, expiration ...
 		expireTime = time.Now().Add(expiration[0])
 	}
 
+	c.mu.Lock()
 	c.memory[key] = mapFields{
 		Value:      fmt.Sprintf("%v", value),
 		ExpireTime: expireTime, // zero time means no TTL (time-to-live)
 	}
+	c.mu.Unlock()
 	return nil
 }
 
@@ -38,16 +40,32 @@ func (c *inCache) Set(ctx context.Context, key string, value any, expiration ...
 // Otherwise, the cached string value is returned.
 // Context parameter is accepted for future extensibility but currently not used.
 func (c *inCache) Get(ctx context.Context, key string) (string, error) {
+	c.mu.RLock()
 	mf, ok := c.memory[key]
 	if !ok {
+		c.mu.RUnlock()
 		return "", fmt.Errorf("key not found")
 	}
 
 	// Check if the key has an expiration time and if it has passed
 	if !mf.ExpireTime.IsZero() && time.Now().After(mf.ExpireTime) {
-		delete(c.memory, key) // Remove expired key
+		c.mu.RUnlock()
+		// Need to delete, so acquire write lock
+		c.mu.Lock()
+		// Check again in case it was updated
+		if mf2, ok2 := c.memory[key]; ok2 && !mf2.ExpireTime.IsZero() && time.Now().After(mf2.ExpireTime) {
+			delete(c.memory, key) // Remove expired key
+		}
+		c.mu.Unlock()
 		return "", fmt.Errorf("key expired")
 	}
 
-	return fmt.Sprintf("%v", mf.Value), nil
+	value, ok := mf.Value.(string)
+	if !ok {
+		c.mu.RUnlock()
+		return "", fmt.Errorf("invalid value type")
+	}
+
+	c.mu.RUnlock()
+	return value, nil
 }

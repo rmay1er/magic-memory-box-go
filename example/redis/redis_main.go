@@ -43,8 +43,11 @@ func RedisExample() {
 		ExpireTime:     2 * time.Hour,
 	})
 
+	//Set Default Model
+	model := &text.GPT41mini
+
 	// create a new text generation client with model and API token
-	client := reptiloid.NewClient(text.GPT41mini, os.Getenv("REPLICATE_API_TOKEN"))
+	client := reptiloid.NewClient(model, os.Getenv("REPLICATE_API_TOKEN"))
 
 	// create a buffered reader to read user input from the console
 	reader := bufio.NewReader(os.Stdin)
@@ -82,7 +85,7 @@ func RedisExample() {
 		// if no memories found (first time interaction),
 		// add an initial raw system message to set behavior (role-playing as Neo from Matrix)
 		if len(mems) < 1 {
-			_ , _ = box.AddRaw(ctx, "ruslan", memorybox.System, "You are Neo from Matrix") // ignore error for AddRaw in this example
+			_, _ = box.AddRaw(ctx, "ruslan", memorybox.System, "You are Neo from Matrix") // ignore error for AddRaw in this example
 		}
 
 		// update MemoryBox with user input and get conversation history
@@ -94,7 +97,7 @@ func RedisExample() {
 		}
 
 		// convert conversation messages to model input format and generate response
-		resp, err := client.Generate(text.GPT4SeriesInput{
+		resp, err := client.Generate(&text.GPT4SeriesInput{
 			Messages: memorybox.ConvertMessagesForReplicate(userMsgs),
 		})
 		if err != nil {
