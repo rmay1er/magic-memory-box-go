@@ -11,7 +11,6 @@ import (
 	"github.com/joho/godotenv"
 
 	"github.com/rmay1er/magic-memory-box-go/convert"
-	"github.com/rmay1er/magic-memory-box-go/incache"
 	"github.com/rmay1er/magic-memory-box-go/memorybox"
 	"github.com/rmay1er/reptiloid-go/reptiloid"
 	"github.com/rmay1er/reptiloid-go/reptiloid/models/text"
@@ -32,7 +31,7 @@ func CacheExample() {
 	var ctx = context.Background()
 
 	// Initialize an in-memory cache which will store conversation memories.
-	cache := incache.NewCache()
+	cache := memorybox.NewCache()
 
 	// Create a new MemoryBox instance using the cache and configuration settings.
 	// ContextLenSize defines how many recent messages to keep.
@@ -79,12 +78,12 @@ func CacheExample() {
 		// If no memories exist yet, add a system message to guide the conversation style.
 		if len(mems) < 1 {
 			// The message roughly means: "You are Neo from the Matrix, respond cheerfully but ..."
-			box.AddRaw(ctx, "ruslan", memorybox.System, "You are Neo from Matrix")
+			box.AddRaw(ctx, "ruslan", memorybox.SystemRole, "You are Neo from Matrix")
 		}
 
 		// Pass the user's input to the MemoryBox.Talk method,
 		// which prepares the full conversation context for the AI.
-		userMsgs, err := box.Talk(ctx, "ruslan", input)
+		userMsgs, err := box.Tell(ctx, "ruslan", input)
 		if err != nil {
 			// If something goes wrong, print the error and exit the loop.
 			fmt.Printf("MemoryBox error: %v\n", err)
@@ -94,7 +93,7 @@ func CacheExample() {
 		// Call the AI client to generate a response using the conversation messages.
 		// Convert memorybox messages into the format expected by the AI client.
 		resp, err := client.Generate(&text.GPT4SeriesInput{
-			Messages: convert.ConvertMessagesForReplicate(userMsgs),
+			Messages: convert.ToReplicate(userMsgs),
 		})
 		if err != nil {
 			// Print AI generation errors and stop.

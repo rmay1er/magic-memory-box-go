@@ -85,11 +85,11 @@ func RedisExample() {
 		// if no memories found (first time interaction),
 		// add an initial raw system message to set behavior (role-playing as Neo from Matrix)
 		if len(mems) < 1 {
-			_, _ = box.AddRaw(ctx, "ruslan", memorybox.System, "You are Neo from Matrix") // ignore error for AddRaw in this example
+			_, _ = box.AddRaw(ctx, "ruslan", memorybox.SystemRole, "You are Neo from Matrix") // ignore error for AddRaw in this example
 		}
 
 		// update MemoryBox with user input and get conversation history
-		userMsgs, err := box.Talk(ctx, "ruslan", input)
+		userMsgs, err := box.Tell(ctx, "ruslan", input)
 		if err != nil {
 			// print error if Talk fails
 			fmt.Printf("MemoryBox error: %v\n", err)
