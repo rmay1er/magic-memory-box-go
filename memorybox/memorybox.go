@@ -6,6 +6,28 @@ import (
 	"time"
 )
 
+type IMemoryBox interface {
+	AddRaw(ctx context.Context, userid string, msgType Role, value string) ([]Message, error)
+	Tell(ctx context.Context, userid string, value string) ([]Message, error)
+	Remember(ctx context.Context, userid string, value string) ([]Message, error)
+	GetMemories(ctx context.Context, userid string) ([]Message, error)
+}
+
+// IMemorizer is the base interface for working with Redis.
+type IMemorizer interface {
+	// Set sets a value with an optional expiration time (TTL).
+	Set(ctx context.Context, key string, value any, expiration ...time.Duration) error
+
+	// Get returns the value of the given key.
+	// If the key does not exist, redis.Nil is returned.
+	Get(ctx context.Context, key string) (string, error)
+}
+
+type MemoryBox struct {
+	IMemorizer
+	MemoryBoxConfig
+}
+
 // NewMemoryBox creates a new MemoryBox instance with the given IMemorizer and configuration.
 func NewMemoryBox(m IMemorizer, cfg MemoryBoxConfig) IMemoryBox {
 	return &MemoryBox{
@@ -70,8 +92,8 @@ func (b *MemoryBox) AddRaw(ctx context.Context, userid string, role Role, value 
 }
 
 // Talk adds a user message to the memory for the specified user.
-func (b *MemoryBox) Talk(ctx context.Context, userid string, value string) ([]Message, error) {
-	resp, err := b.AddRaw(ctx, userid, User, value)
+func (b *MemoryBox) Tell(ctx context.Context, userid string, value string) ([]Message, error) {
+	resp, err := b.AddRaw(ctx, userid, UserRole, value)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +102,7 @@ func (b *MemoryBox) Talk(ctx context.Context, userid string, value string) ([]Me
 
 // Remember adds an assistant message to the memory for the specified user.
 func (b *MemoryBox) Remember(ctx context.Context, userid string, value string) ([]Message, error) {
-	resp, err := b.AddRaw(ctx, userid, Assistant, value)
+	resp, err := b.AddRaw(ctx, userid, AssistantRole, value)
 	if err != nil {
 		return nil, err
 	}
