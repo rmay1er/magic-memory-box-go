@@ -4,6 +4,10 @@
 
 Magic Memory Box Go provides a simple and flexible way to store and manage conversation history with AI models. The library works with any AI service (OpenAI, Replicate, Claude, DeepSeek, etc.) and supports multiple storage backends.
 
+## 🖼️ Need AI Image or Text Generation?
+
+Want to quickly generate AI images or text with Replicate? Try [Reptiloid Go](https://github.com/rmay1er/reptiloid-go) — a simple and fast Go library that integrates perfectly with Magic Memory Box for memory-enabled AI conversations!
+
 ---
 
 ## 🎯 Who is this library for?
@@ -202,6 +206,4 @@ MIT License — Free to use for any purpose.
 
 ---
 
-**Magic Memory Box Go** — Make your AI models smarter by giving them memory of past conversations. Simple, flexible, effective.
-
-*Works with any AI. Stores what you need. Forgets what it should.*
+Made with ❤️ for Go beginners exploring AI generation
