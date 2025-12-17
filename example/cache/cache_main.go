@@ -93,7 +93,7 @@ func CacheExample() {
 		// Call the AI client to generate a response using the conversation messages.
 		// Convert memorybox messages into the format expected by the AI client.
 		resp, err := client.Generate(&text.GPT4SeriesInput{
-			Messages: convert.ToReplicate(userMsgs),
+			Messages: convert.ToReplicate(userMsgs), // or use inline convert.ToReplicate(box.TellUnsafe(ctx, "ruslan", input))
 		})
 		if err != nil {
 			// Print AI generation errors and stop.

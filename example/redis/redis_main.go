@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-redis/redis/v8"
 	"github.com/joho/godotenv"
+	"github.com/rmay1er/magic-memory-box-go/convert"
 	"github.com/rmay1er/magic-memory-box-go/memorybox"
 	"github.com/rmay1er/magic-memory-box-go/rdb"
 	"github.com/rmay1er/reptiloid-go/reptiloid"
@@ -98,7 +99,7 @@ func RedisExample() {
 
 		// convert conversation messages to model input format and generate response
 		resp, err := client.Generate(&text.GPT4SeriesInput{
-			Messages: memorybox.ConvertMessagesForReplicate(userMsgs),
+			Messages: convert.ToReplicate(userMsgs), // or use inline convert.ToReplicate(box.TellUnsafe(ctx, "ruslan", input))
 		})
 		if err != nil {
 			// print error message

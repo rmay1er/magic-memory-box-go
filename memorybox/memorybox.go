@@ -3,6 +3,7 @@ package memorybox
 import (
 	"context"
 	"encoding/json"
+	"log/slog"
 	"time"
 )
 
@@ -98,6 +99,18 @@ func (b *MemoryBox) Tell(ctx context.Context, userid string, value string) ([]Me
 		return nil, err
 	}
 	return resp, nil
+}
+
+// TalkUnsafe adds a user message to the memory for the specified user, without ERROR
+// for inline pattern design.
+func (b *MemoryBox) TellUnsafe(ctx context.Context, userid string, value string) []Message {
+	msgs, err := b.Tell(ctx, userid, value)
+	if err != nil {
+		// Логируй или panic (но panic — плохо для продакшена)
+		slog.Error("Ошибка в Tell", "err", err)
+		return []Message{} // Или верни nil
+	}
+	return msgs
 }
 
 // Remember adds an assistant message to the memory for the specified user.
