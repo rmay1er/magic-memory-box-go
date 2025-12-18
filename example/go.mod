@@ -7,7 +7,7 @@ require (
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/joho/godotenv v1.5.1
 	github.com/rmay1er/magic-memory-box-go v1.0.2
-	github.com/rmay1er/magic-memory-box-go/convert/fantasy v0.0.0
+	github.com/rmay1er/magic-memory-box-go/convert/fantasy v0.0.0-20251218123738-858101600f44
 	github.com/rmay1er/magic-memory-box-go/rdb v0.0.0-20251216183305-64d7bd110ce5
 	github.com/rmay1er/reptiloid-go v0.5.100
 )
@@ -77,9 +77,3 @@ require (
 	google.golang.org/grpc v1.74.2 // indirect
 	google.golang.org/protobuf v1.36.7 // indirect
 )
-
-replace github.com/rmay1er/magic-memory-box-go => ../
-
-replace github.com/rmay1er/magic-memory-box-go/convert/fantasy => ../convert/fantasy
-
-replace charm.land/fantasy v0.5.3 => /Users/ruslan/Documents/zed-projects/go-projects/fantasy-fork
