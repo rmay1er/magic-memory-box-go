@@ -4,9 +4,10 @@
 
 Magic Memory Box Go provides a simple and flexible way to store and manage conversation history with AI models. The library works with any AI service (OpenAI, Replicate, Claude, DeepSeek, etc.) and supports multiple storage backends.
 
-## 🖼️ Need AI Image or Text Generation?
-
-Want to quickly generate AI images or text with Replicate? Try [Reptiloid Go](https://github.com/rmay1er/reptiloid-go) — a simple and fast Go library that integrates perfectly with Magic Memory Box for memory-enabled AI conversations!
+### Integrations
+- **[Reptiloid](https://github.com/rmay1er/reptiloid-go)**: Seamless integration with Replicate for AI image and text generation.
+- **[Fantasy](https://github.com/charmbracelet/fantasy)**: Support for multi-provider AI agents with tool calling.
+- **Planned**: Integration with popular [go-openai](https://github.com/sashabaranov/go-openai) library for ChatGPT models.
 
 ---
 
@@ -119,7 +120,7 @@ redisAdapter := rdb.NewRedisAdapter(client, "chat:", true)
 
 ### With Replicate (via Reptiloid)
 ```go
-import "github.com/rmay1er/magic-memory-box-go/convert"
+import "github.com/rmay1er/magic-memory-box-go/convert/replicate"
 
 // Get conversation history
 messages, _ := mb.GetMemories(ctx, "user123")
@@ -129,22 +130,6 @@ replicateMessages := convert.ToReplicate(messages)
 
 // Send to AI model...
 ```
-
-### With OpenAI API
-```go
-// Ready format for OpenAI Chat Completion
-openaiMessages := []map[string]string{
-    {"role": "system", "content": "You are a helpful assistant"},
-    {"role": "user", "content": "Hello!"},
-    {"role": "assistant", "content": "Hi there!"},
-}
-// messages from GetMemories are already in this format!
-```
-
-### Integrations
-- **[Reptiloid](https://github.com/rmay1er/reptiloid-go)**: Seamless integration with Replicate for AI image and text generation.
-- **[Fantasy](https://github.com/charmbracelet/fantasy)**: Support for multi-provider AI agents with tool calling.
-- **Planned**: Integration with popular [go-openai](https://github.com/sashabaranov/go-openai) library for ChatGPT models.
 
 ---
 
