@@ -10,6 +10,7 @@ import (
 type IMemoryBox interface {
 	AddRaw(ctx context.Context, userid string, msgType Role, value string) ([]Message, error)
 	Tell(ctx context.Context, userid string, value string) ([]Message, error)
+	TellUnsafe(ctx context.Context, userid string, value string) []Message
 	Remember(ctx context.Context, userid string, value string) ([]Message, error)
 	GetMemories(ctx context.Context, userid string) ([]Message, error)
 }

@@ -10,7 +10,7 @@ import (
 
 	"github.com/joho/godotenv"
 
-	"github.com/rmay1er/magic-memory-box-go/convert"
+	convert "github.com/rmay1er/magic-memory-box-go/convert/replicate"
 	"github.com/rmay1er/magic-memory-box-go/memorybox"
 	"github.com/rmay1er/reptiloid-go/reptiloid"
 	"github.com/rmay1er/reptiloid-go/reptiloid/models/text"

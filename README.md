@@ -141,6 +141,11 @@ openaiMessages := []map[string]string{
 // messages from GetMemories are already in this format!
 ```
 
+### Integrations
+- **[Reptiloid](https://github.com/rmay1er/reptiloid-go)**: Seamless integration with Replicate for AI image and text generation.
+- **[Fantasy](https://github.com/charmbracelet/fantasy)**: Support for multi-provider AI agents with tool calling.
+- **Planned**: Integration with popular [go-openai](https://github.com/sashabaranov/go-openai) library for ChatGPT models.
+
 ---
 
 ## 🎮 Use Cases
