@@ -96,7 +96,7 @@ func FantasyExample() {
 			box.AddRaw(ctx, "user", memorybox.SystemRole, "You are an AI - weather analysis tool")
 		}
 
-		// Pass the user's input to the MemoryBox.Talk method,
+		// Pass the user's input to the MemoryBox.Tell method,
 		// which prepares the full conversation context for the AI.
 		userMsgs, err := box.Tell(ctx, "user", input)
 		if err != nil {
