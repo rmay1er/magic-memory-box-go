@@ -11,7 +11,6 @@ import (
 
 	"charm.land/fantasy"
 	"charm.land/fantasy/providers/openrouter"
-	"github.com/joho/godotenv"
 	convert "github.com/rmay1er/magic-memory-box-go/convert/fantasy"
 	"github.com/rmay1er/magic-memory-box-go/memorybox"
 )
@@ -21,11 +20,11 @@ import (
 func FantasyExample() {
 
 	// Load environment variables from a .env file. This is where secrets like API tokens are stored.
-	err := godotenv.Load()
-	if err != nil {
-		// If loading the .env file fails, stop execution and show the error.
-		panic(err)
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	// If loading the .env file fails, stop execution and show the error.
+	// 	panic(err)
+	// }
 
 	// Create a context to manage request lifetimes and cancellation signals.
 	var ctx = context.Background()
@@ -108,7 +107,7 @@ func FantasyExample() {
 		// Call the AI client to generate a response using the conversation messages.
 		// Convert memorybox messages into the format expected by the AI client.
 		resp, err := agent.Generate(ctx, fantasy.AgentCall{
-			Prompt:   input,
+			// Prompt:   input, // Was Error because empty.
 			Messages: convert.ToFantasy(userMsgs),
 		})
 		if err != nil {

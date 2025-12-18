@@ -81,3 +81,5 @@ require (
 replace github.com/rmay1er/magic-memory-box-go => ../
 
 replace github.com/rmay1er/magic-memory-box-go/convert/fantasy => ../convert/fantasy
+
+replace charm.land/fantasy v0.5.3 => /Users/ruslan/Documents/zed-projects/go-projects/fantasy-fork
